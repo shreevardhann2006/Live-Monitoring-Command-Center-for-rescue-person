@@ -192,7 +192,11 @@ function generateAlert(worker) {
     activeAlerts.unshift(alertOb);
     if (activeAlerts.length > 5) activeAlerts.pop(); // Keep max 5 alerts visible
 
+    // Save to historical alerts array
+    historicalAlerts.unshift(alertOb);
+
     renderAlertsPanel();
+    renderAlertsHistory();
     showToast(alertOb.msg);
 }
 
@@ -386,9 +390,35 @@ document.addEventListener('click', function (e) {
     // Sidebar Nav Links
     if (e.target.closest('.side-nav a')) {
         e.preventDefault();
-        const navItem = e.target.closest('li');
+        const link = e.target.closest('a');
+        const navItem = link.parentElement;
+
         document.querySelectorAll('.side-nav li').forEach(li => li.classList.remove('active'));
         navItem.classList.add('active');
+
+        const targetViewName = link.getAttribute('data-target');
+
+        if (targetViewName) {
+            document.querySelectorAll('.page-view').forEach(view => {
+                view.style.display = 'none';
+                view.classList.remove('active');
+            });
+
+            const targetView = document.getElementById('view-' + targetViewName);
+            if (targetView) {
+                targetView.style.display = 'block';
+                targetView.classList.add('active');
+
+                if (targetViewName === 'units') {
+                    renderAllUnitsGrid();
+                } else if (targetViewName === 'map') {
+                    document.getElementById('mapUnitCount').innerText = workers.length;
+                } else if (targetViewName === 'alerts') {
+                    renderAlertsHistory();
+                }
+            }
+        }
+
         showToast('Navigating to ' + e.target.innerText.trim());
     }
 
@@ -418,6 +448,76 @@ themeBtn.addEventListener('click', () => {
         showToast('Switched to Light Mode');
     }
 });
+
+// Additional View Rendering Logic
+let historicalAlerts = [];
+
+function renderAllUnitsGrid() {
+    const unitsGrid = document.getElementById('allUnitsGrid');
+    if (!unitsGrid) return;
+
+    let html = workers.map(w => {
+        const batteryColor = w.battery > 50 ? '#10b981' : (w.battery > 20 ? '#f59e0b' : '#ef4444');
+        return `
+        <div class="worker-card status-${w.status}">
+            <div class="worker-header">
+                <div class="worker-identity">
+                    <div class="worker-avatar">${w.avatar}</div>
+                    <div class="worker-info">
+                        <h4>${w.name}</h4>
+                        <div class="worker-role"><i class="fa-solid fa-id-badge"></i> ${w.id} | ${w.role}</div>
+                    </div>
+                </div>
+                <div class="battery-status" style="color: ${batteryColor}">
+                    ${w.battery}% <i class="fa-solid fa-bolt"></i>
+                </div>
+            </div>
+            <div class="worker-footer" style="flex-direction: column; align-items: flex-start; gap: 8px;">
+                <div class="location-info"><i class="fa-solid fa-location-dot"></i> ${w.location}</div>
+                <div style="font-size: 0.85rem; color: var(--text-secondary);">
+                    HR: ${w.vitals.hr} | SpO2: ${w.vitals.spo2}% | Temp: ${w.vitals.temp.toFixed(1)}°C
+                </div>
+            </div>
+        </div>`;
+    }).join('');
+
+    unitsGrid.innerHTML = html;
+}
+
+function renderAlertsHistory() {
+    const listEl = document.getElementById('alertsHistoryList');
+    if (!listEl) return;
+
+    if (historicalAlerts.length === 0) {
+        listEl.innerHTML = `<div style="padding: 2rem; text-align: center; color: var(--text-secondary);">No historical alerts recorded.</div>`;
+        return;
+    }
+
+    listEl.innerHTML = historicalAlerts.map(a => `
+        <div class="worker-card" style="margin-bottom: 1rem; flex-direction: row; justify-content: space-between; align-items: center; padding: 1rem 1.5rem;">
+            <div style="display: flex; gap: 1rem; align-items: center;">
+                <div class="stat-icon bg-red" style="width: 40px; height: 40px; font-size: 1.2rem;"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div>
+                    <strong style="color: var(--text-primary);">${a.msg}</strong>
+                    <div style="color: var(--text-secondary); font-size: 0.85rem; margin-top: 4px;">Worker ID: ${a.workerId}</div>
+                </div>
+            </div>
+            <div style="color: var(--text-secondary); font-size: 0.9rem;">
+                <i class="fa-regular fa-clock"></i> ${a.time}
+            </div>
+        </div>
+    `).join('');
+}
+
+window.clearAlertHistory = function () {
+    historicalAlerts = [];
+    renderAlertsHistory();
+    showToast('Alert history cleared.');
+};
+
+window.saveSettings = function () {
+    showToast('Settings saved successfully.');
+};
 
 // Run Startup
 document.addEventListener('DOMContentLoaded', init);

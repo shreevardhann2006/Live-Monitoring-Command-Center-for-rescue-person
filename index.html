@@ -26,11 +26,12 @@
             </div>
             <nav class="side-nav">
                 <ul>
-                    <li class="active"><a href="#"><i class="fa-solid fa-chart-line"></i> Dashboard</a></li>
-                    <li><a href="#"><i class="fa-solid fa-users"></i> Units</a></li>
-                    <li><a href="#"><i class="fa-solid fa-map-location-dot"></i> Map View</a></li>
-                    <li><a href="#"><i class="fa-solid fa-bell"></i> Alert History</a></li>
-                    <li><a href="#"><i class="fa-solid fa-gear"></i> Settings</a></li>
+                    <li class="active"><a href="#" data-target="dashboard"><i class="fa-solid fa-chart-line"></i>
+                            Dashboard</a></li>
+                    <li><a href="#" data-target="units"><i class="fa-solid fa-users"></i> Units & Electricity</a></li>
+                    <li><a href="#" data-target="map"><i class="fa-solid fa-map-location-dot"></i> Map View</a></li>
+                    <li><a href="#" data-target="alerts"><i class="fa-solid fa-bell"></i> Alert History</a></li>
+                    <li><a href="#" data-target="settings"><i class="fa-solid fa-gear"></i> Settings</a></li>
                 </ul>
             </nav>
             <div class="emergency-action">
@@ -64,56 +65,138 @@
             </header>
 
             <!-- Overview Stats -->
-            <section class="stats-overview">
-                <div class="stat-card">
-                    <div class="stat-icon bg-blue"><i class="fa-solid fa-users-viewfinder"></i></div>
-                    <div class="stat-info">
-                        <h3>Active Workers</h3>
-                        <p class="stat-value" id="totalWorkers">8</p>
+            <div id="view-dashboard" class="page-view active">
+                <section class="stats-overview">
+                    <div class="stat-card">
+                        <div class="stat-icon bg-blue"><i class="fa-solid fa-users-viewfinder"></i></div>
+                        <div class="stat-info">
+                            <h3>Active Workers</h3>
+                            <p class="stat-value" id="totalWorkers">8</p>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon bg-green"><i class="fa-solid fa-shield-heart"></i></div>
-                    <div class="stat-info">
-                        <h3>Stable Conditions</h3>
-                        <p class="stat-value text-green" id="stableWorkers">8</p>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-green"><i class="fa-solid fa-shield-heart"></i></div>
+                        <div class="stat-info">
+                            <h3>Stable Conditions</h3>
+                            <p class="stat-value text-green" id="stableWorkers">8</p>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-icon bg-yellow"><i class="fa-solid fa-triangle-exclamation"></i></div>
-                    <div class="stat-info">
-                        <h3>At Risk / Warning</h3>
-                        <p class="stat-value text-yellow" id="warningWorkers">0</p>
+                    <div class="stat-card">
+                        <div class="stat-icon bg-yellow"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                        <div class="stat-info">
+                            <h3>At Risk / Warning</h3>
+                            <p class="stat-value text-yellow" id="warningWorkers">0</p>
+                        </div>
                     </div>
-                </div>
-                <div class="stat-card alert-card">
-                    <div class="stat-icon bg-red"><i class="fa-solid fa-truck-medical"></i></div>
-                    <div class="stat-info">
-                        <h3>Critical Alerts</h3>
-                        <p class="stat-value text-red" id="criticalWorkers">0</p>
+                    <div class="stat-card alert-card">
+                        <div class="stat-icon bg-red"><i class="fa-solid fa-truck-medical"></i></div>
+                        <div class="stat-info">
+                            <h3>Critical Alerts</h3>
+                            <p class="stat-value text-red" id="criticalWorkers">0</p>
+                        </div>
                     </div>
-                </div>
-            </section>
+                </section>
 
-            <!-- Dynamic Alerts Panel -->
-            <section class="alerts-panel hidden" id="alertsPanel">
-                <!-- Alerts will be injected here via JS -->
-            </section>
+                <!-- Dynamic Alerts Panel -->
+                <section class="alerts-panel hidden" id="alertsPanel">
+                    <!-- Alerts will be injected here via JS -->
+                </section>
 
-            <!-- Workers Grid Layout -->
-            <section class="workers-container">
-                <div class="section-header">
-                    <h3><i class="fa-solid fa-walkie-talkie"></i> Deployed Personnel Activity</h3>
-                    <div class="filter-controls">
-                        <button class="filter-btn active" data-filter="all">All</button>
-                        <button class="filter-btn" data-filter="critical">Critical</button>
-                        <button class="filter-btn" data-filter="warning">Warning</button>
+                <!-- Workers Grid Layout -->
+                <section class="workers-container">
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-walkie-talkie"></i> Deployed Personnel Activity</h3>
+                        <div class="filter-controls">
+                            <button class="filter-btn active" data-filter="all">All</button>
+                            <button class="filter-btn" data-filter="critical">Critical</button>
+                            <button class="filter-btn" data-filter="warning">Warning</button>
+                        </div>
                     </div>
-                </div>
-                <div class="workers-grid" id="workersGrid">
-                    <!-- Worker Cards injected via JS -->
-                </div>
-            </section>
+                    <div class="workers-grid" id="workersGrid">
+                        <!-- Worker Cards injected via JS -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Units View -->
+            <div id="view-units" class="page-view" style="display: none;">
+                <section class="workers-container" style="flex:1;">
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-users"></i> Deployed Units & Electricity Modules</h3>
+                    </div>
+                    <div class="workers-grid" id="allUnitsGrid">
+                        <!-- Cloned or customized units view -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Map View -->
+            <div id="view-map" class="page-view" style="display: none;">
+                <section class="workers-container" style="flex:1;">
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-map"></i> Tactical Map View</h3>
+                    </div>
+                    <div class="map-placeholder" id="tacticalMap">
+                        <div class="map-overlay">
+                            <i class="fa-solid fa-map-location-dot"
+                                style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent-blue);"></i>
+                            <p>Live GPS Tracking Active - <span id="mapUnitCount">0</span> Units Deployed</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Alerts History -->
+            <div id="view-alerts" class="page-view" style="display: none;">
+                <section class="workers-container" style="flex:1;">
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-bell"></i> Incident & Alert History</h3>
+                        <button class="filter-btn" onclick="clearAlertHistory()"><i class="fa-solid fa-trash"></i>
+                            Clear</button>
+                    </div>
+                    <div class="alerts-history-list" id="alertsHistoryList">
+                        <div style="padding: 2rem; text-align: center; color: var(--text-secondary);">No historical
+                            alerts recorded.</div>
+                    </div>
+                </section>
+            </div>
+
+            <!-- Settings -->
+            <div id="view-settings" class="page-view" style="display: none;">
+                <section class="workers-container" style="flex:1;">
+                    <div class="section-header">
+                        <h3><i class="fa-solid fa-gear"></i> System Settings</h3>
+                        <button class="filter-btn active" onclick="saveSettings()">Save Changes</button>
+                    </div>
+                    <div class="settings-grid">
+                        <div class="worker-card">
+                            <h4>Notification Preferences</h4>
+                            <label style="display:block; margin: 1rem 0;"><input type="checkbox" checked> Enable Audio
+                                Alerts for Critical Events</label>
+                            <label style="display:block; margin: 1rem 0;"><input type="checkbox" checked> Desktop
+                                Notifications</label>
+                            <label style="display:block; margin: 1rem 0;"><input type="checkbox"> Email Reports</label>
+                        </div>
+                        <div class="worker-card">
+                            <h4>Telemetry Thresholds</h4>
+                            <div style="margin-top: 1rem;">
+                                <label
+                                    style="display:block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.3rem;">Max
+                                    Heart Rate Warning (bpm)</label>
+                                <input type="number" value="120"
+                                    style="width:100%; padding:0.5rem; border-radius:6px; background:rgba(0,0,0,0.2); border:1px solid var(--border-color); color:white;">
+                            </div>
+                            <div style="margin-top: 1rem;">
+                                <label
+                                    style="display:block; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.3rem;">Min
+                                    SpO2 Warning (%)</label>
+                                <input type="number" value="94"
+                                    style="width:100%; padding:0.5rem; border-radius:6px; background:rgba(0,0,0,0.2); border:1px solid var(--border-color); color:white;">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
         </main>
     </div>
 
