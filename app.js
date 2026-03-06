@@ -356,5 +356,31 @@ function setupFilters() {
     });
 }
 
+// Global scope buttons setup
+document.addEventListener('click', function (e) {
+    if (e.target.closest('.btn-contact')) {
+        const card = e.target.closest('.worker-card');
+        const workerName = card.querySelector('h4').innerText;
+        showToast('Initiating radio contact with ' + workerName + '...');
+    }
+
+    if (e.target.closest('.btn-emergency')) {
+        systemStatusIndicator.classList.add('critical-global');
+        systemStatusIndicator.innerHTML = `<span class="pulse-dot"></span> EMERGENCY BROADCAST SENT`;
+        showToast('All units advised to evacuate immediately.');
+
+        // Reset broadcast status after 10s if no critical
+        setTimeout(() => {
+            const criticalCount = workers.filter(w => w.status === 'critical').length;
+            if (criticalCount === 0) {
+                systemStatusIndicator.classList.remove('critical-global');
+                systemStatusIndicator.innerHTML = `<span class="pulse-dot"></span> System Online`;
+            } else {
+                systemStatusIndicator.innerHTML = `<span class="pulse-dot"></span> EMERGENCY DETECTED`;
+            }
+        }, 10000);
+    }
+});
+
 // Run Startup
 document.addEventListener('DOMContentLoaded', init);
