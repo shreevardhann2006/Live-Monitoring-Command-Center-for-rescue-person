@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,11 +8,14 @@
     <!-- Connect Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700&display=swap"
+        rel="stylesheet">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <div class="dashboard-layout">
         <!-- Sidebar Navigation -->
@@ -42,14 +46,19 @@
                     <h2>Live Monitoring Command Center</h2>
                     <p class="subtitle">Sector 4: Building Collapse Operation</p>
                 </div>
-                
+
                 <div class="topbar-actions">
+                    <button class="btn-theme-toggle" id="themeToggle" title="Toggle Theme">
+                        <i class="fa-solid fa-sun light-icon"></i>
+                        <i class="fa-solid fa-moon dark-icon" style="display: none;"></i>
+                    </button>
                     <div class="system-status normal" id="systemStatusIndicator">
                         <span class="pulse-dot"></span> System Online
                     </div>
                     <div class="clock" id="liveClock">00:00:00</div>
                     <div class="profile-menu">
-                        <img src="https://ui-avatars.com/api/?name=Commander+1&background=0D8ABC&color=fff" alt="Profile" class="avatar">
+                        <img src="https://ui-avatars.com/api/?name=Commander+1&background=0D8ABC&color=fff"
+                            alt="Profile" class="avatar">
                     </div>
                 </div>
             </header>
@@ -113,4 +122,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>

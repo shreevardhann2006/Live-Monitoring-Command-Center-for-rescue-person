@@ -358,12 +358,14 @@ function setupFilters() {
 
 // Global scope buttons setup
 document.addEventListener('click', function (e) {
+    // Comms Action
     if (e.target.closest('.btn-contact')) {
         const card = e.target.closest('.worker-card');
         const workerName = card.querySelector('h4').innerText;
         showToast('Initiating radio contact with ' + workerName + '...');
     }
 
+    // Emergency Action
     if (e.target.closest('.btn-emergency')) {
         systemStatusIndicator.classList.add('critical-global');
         systemStatusIndicator.innerHTML = `<span class="pulse-dot"></span> EMERGENCY BROADCAST SENT`;
@@ -379,6 +381,41 @@ document.addEventListener('click', function (e) {
                 systemStatusIndicator.innerHTML = `<span class="pulse-dot"></span> EMERGENCY DETECTED`;
             }
         }, 10000);
+    }
+
+    // Sidebar Nav Links
+    if (e.target.closest('.side-nav a')) {
+        e.preventDefault();
+        const navItem = e.target.closest('li');
+        document.querySelectorAll('.side-nav li').forEach(li => li.classList.remove('active'));
+        navItem.classList.add('active');
+        showToast('Navigating to ' + e.target.innerText.trim());
+    }
+
+    // Profile Menu Click
+    if (e.target.closest('.profile-menu')) {
+        showToast('Opening commander profile settings...');
+    }
+});
+
+// Theme Toggle Logic
+const themeBtn = document.getElementById('themeToggle');
+const lightIcon = themeBtn.querySelector('.light-icon');
+const darkIcon = themeBtn.querySelector('.dark-icon');
+
+themeBtn.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+
+    if (currentTheme === 'light') {
+        document.documentElement.removeAttribute('data-theme');
+        lightIcon.style.display = 'block';
+        darkIcon.style.display = 'none';
+        showToast('Switched to Dark Mode');
+    } else {
+        document.documentElement.setAttribute('data-theme', 'light');
+        lightIcon.style.display = 'none';
+        darkIcon.style.display = 'block';
+        showToast('Switched to Light Mode');
     }
 });
 
