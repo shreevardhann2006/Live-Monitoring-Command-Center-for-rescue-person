@@ -489,7 +489,7 @@ function renderAlertsHistory() {
     if (!listEl) return;
 
     if (historicalAlerts.length === 0) {
-        listEl.innerHTML = `<div style="padding: 2rem; text-align: center; color: var(--text-secondary);">No historical alerts recorded.</div>`;
+        listEl.innerHTML = `<div class="empty-state">No historical alerts recorded.</div>`;
         return;
     }
 
@@ -517,6 +517,14 @@ window.clearAlertHistory = function () {
 
 window.saveSettings = function () {
     showToast('Settings saved successfully.');
+};
+
+window.revokeSessions = function () {
+    showToast('All other active sessions have been revoked.');
+};
+
+window.downloadLogs = function () {
+    showToast('Downloading security access logs...');
 };
 
 // Run Startup

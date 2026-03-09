@@ -252,6 +252,18 @@ body {
   border-color: var(--accent-blue);
 }
 
+.profile-name {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-right: 0.8rem;
+  color: var(--text-primary);
+}
+
+.profile-menu {
+  display: flex;
+  align-items: center;
+}
+
 /* Overview Stats Grid */
 .stats-overview {
   display: grid;
@@ -882,6 +894,66 @@ body {
   position: relative;
   overflow: hidden;
   border: 1px solid var(--border-color);
+}
+
+/* Security Section Styles */
+.setting-item {
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.setting-item label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.95rem;
+  cursor: pointer;
+  color: var(--text-primary);
+}
+
+.setting-item input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent-blue);
+}
+
+.security-status {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  margin: 1rem 0 1.5rem 0;
+  background: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.security-status p {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.1) !important;
+  color: var(--accent-red) !important;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+.btn-danger:hover {
+  background: var(--accent-red) !important;
+  color: white !important;
+}
+
+/* Alert History Empty State */
+.empty-state {
+  padding: 3rem;
+  text-align: center;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border-radius: var(--border-radius);
+  border: 1px dashed var(--border-color);
 }
 
 .map-overlay {
